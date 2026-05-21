@@ -1,0 +1,17 @@
+node_modules/
+*.tgz
+*.log
+
+# Local working memory — family-wide convention is to keep this out of git.
+AGENTS.md
+
+# TypeScript build output
+dist/
+*.tsbuildinfo
+
+# antlr-ng generated parser/lexer/visitor — built by `npm run build:grammar`.
+# Vendored base classes (LexerBase, ParserBase) coexist in src/generated/ and
+# stay tracked; everything else there is build output.
+src/generated/*
+!src/generated/TypeScriptLexerBase.ts
+!src/generated/TypeScriptParserBase.ts
