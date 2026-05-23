@@ -1,6 +1,6 @@
 {
     "name": "@plurnk/plurnk-mimetypes-text-typescript",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "description": "text/typescript and text/javascript mimetype handler for plurnk-service. ANTLR-backed extraction; the TS grammar handles plain JS as a subset.",
     "type": "module",
     "license": "MIT",
@@ -57,7 +57,7 @@
         "prepare": "npm run build"
     },
     "dependencies": {
-        "@plurnk/plurnk-mimetypes": "^0.2.1",
+        "@plurnk/plurnk-mimetypes": "^0.4.0",
         "antlr4ng": "^3.0.0"
     },
     "devDependencies": {
