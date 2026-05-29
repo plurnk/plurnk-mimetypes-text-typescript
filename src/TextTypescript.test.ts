@@ -154,4 +154,40 @@ describe("TextTypescript — framework integration", () => {
         const out = h.symbolsRaw(src);
         assert.ok(out.includes("function go"));
     });
+
+    it("inherits jsonpath query against the symbol outline (navigate class members by name)", async () => {
+        const h = new TextTypescript(tsMetadata);
+        const src = [
+            "export class Parser {",
+            "    parse(source: string) {}",
+            "    load(dir: string) {}",
+            "}",
+            "export function topLevel(a: number) {}",
+        ].join("\n");
+        // Navigate to a class method by name.
+        const parseMethod = await h.query(src, "jsonpath", "$.Parser.parse");
+        assert.equal(parseMethod.length, 1);
+        assert.equal(typeof parseMethod[0].matched, "number");
+
+        // Navigate to a top-level function.
+        const topLevel = await h.query(src, "jsonpath", "$.topLevel");
+        assert.equal(topLevel.length, 1);
+        assert.equal(typeof topLevel[0].matched, "number");
+
+        // Get the whole class subtree.
+        const parserSubtree = await h.query(src, "jsonpath", "$.Parser");
+        assert.equal(parserSubtree.length, 1);
+        const matched = parserSubtree[0].matched as Record<string, unknown>;
+        assert.ok("parse" in matched);
+        assert.ok("load" in matched);
+    });
+
+    it("inherits regex query against the source body", async () => {
+        const h = new TextTypescript(tsMetadata);
+        const src = "// TODO: refactor\nfunction go() {}\n// TODO: tests";
+        const out = await h.query(src, "regex", "TODO: (\\w+)");
+        assert.equal(out.length, 2);
+        assert.deepEqual(out[0].matched, ["refactor"]);
+        assert.deepEqual(out[1].matched, ["tests"]);
+    });
 });
